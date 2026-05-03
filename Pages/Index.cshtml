@@ -16,7 +16,8 @@
                 <th>#</th>
                 <th>Task</th>
                 <th>Deadline</th>
-                <th>Score</th>
+                <th>Priority Score</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -54,6 +55,14 @@
 
                     <td>@t.Deadline.ToShortDateString()</td>
                     <td><strong>@t.Score</strong></td>
+
+                    <!-- DELETE BUTTON -->
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="id" value="@t.Id" />
+                            <button class="delete-btn" type="submit">✕</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -67,12 +76,6 @@
         <label>Task Title</label>
         <input asp-for="NewTask.Title" required />
 
-        <label>Category</label>
-        <select asp-for="NewTask.Category">
-            <option>School</option>
-            <option>Work</option>
-            <option>Personal</option>
-        </select>
 
         <label>Deadline</label>
         <input asp-for="NewTask.Deadline" type="date" required />

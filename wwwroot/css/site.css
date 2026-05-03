@@ -109,3 +109,12 @@ button {
     width: 100%;
     padding: 4px;
 }
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+}

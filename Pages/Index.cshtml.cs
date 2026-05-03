@@ -61,5 +61,17 @@ namespace PriorityDashboard.Pages
             return RedirectToPage();
         }
 
+        public IActionResult OnPostDelete(int id)
+        {
+            var task = _context.Tasks.FirstOrDefault(t => t.Id == id);
+            if (task != null)
+            {
+                _context.Tasks.Remove(task);
+                _context.SaveChanges();
+            }
+
+            return RedirectToPage();
+        }
+
     }
 }
