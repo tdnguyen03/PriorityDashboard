@@ -1,0 +1,115 @@
+﻿@page
+@model PriorityDashboard.Pages.IndexModel
+
+<link rel="stylesheet" href="/css/site.css" />
+
+
+<div class="container">
+    <h1>Priority Dashboard</h1>
+    <p class="subtitle">Tasks ranked by priority score</p>
+
+    <button onclick="openModal()">+ Add Task</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Task</th>
+                <th>Deadline</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Tasks.Count; i++)
+            {
+                var t = Model.Tasks[i];
+                var subtasks = (t.SubtasksRaw ?? "").Split('|', StringSplitOptions.RemoveEmptyEntries);
+
+                <tr>
+                    <td>@(i + 1)</td>
+
+                    <td>
+                        <div class="task-header">
+                            <strong>@t.Title</strong>
+                            <button class="add-sub" onclick="showSubtaskInput(@t.Id)">+</button>
+                        </div>
+
+                        @if (subtasks.Length > 0)
+                        {
+                            <div class="subtasks">
+                                @foreach (var sub in subtasks)
+                                {
+                                    <label>
+                                        <input type="checkbox" /> @sub
+                                    </label>
+                                }
+                            </div>
+                        }
+
+                        <form method="post" asp-page-handler="AddSubtask" class="subtask-form" id="form-@t.Id">
+                            <input type="hidden" name="id" value="@t.Id" />
+                            <input name="subtask" placeholder="New subtask..." />
+                        </form>
+                    </td>
+
+                    <td>@t.Deadline.ToShortDateString()</td>
+                    <td><strong>@t.Score</strong></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="modal" class="modal">
+    <form method="post" class="modal-content">
+        <h2>Add Task</h2>
+
+        <label>Task Title</label>
+        <input asp-for="NewTask.Title" required />
+
+        <label>Category</label>
+        <select asp-for="NewTask.Category">
+            <option>School</option>
+            <option>Work</option>
+            <option>Personal</option>
+        </select>
+
+        <label>Deadline</label>
+        <input asp-for="NewTask.Deadline" type="date" required />
+
+        <label>Effort Level</label>
+        <select asp-for="NewTask.Effort">
+            <option value="1">Low</option>
+            <option value="2">Medium</option>
+            <option value="3">High</option>
+        </select>
+
+        <label>Importance Level</label>
+        <select asp-for="NewTask.Importance">
+            <option value="1">Low</option>
+            <option value="2">Medium</option>
+            <option value="3">High</option>
+        </select>
+
+        <div class="modal-actions">
+            <button type="submit">Add Task</button>
+            <button type="button" onclick="closeModal()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    function showSubtaskInput(id) {
+        const form = document.getElementById('form-' + id);
+        form.style.display = 'block';
+        form.querySelector('input[name="subtask"]').focus();
+    }
+</script>
