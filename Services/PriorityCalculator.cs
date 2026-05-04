@@ -10,11 +10,11 @@ namespace PriorityDashboard.Services
 
             int deadlineScore = daysLeft switch
             {
-                <= 1 => 50,
-                <= 3 => 40,
-                <= 7 => 30,
-                <= 14 => 20,
-                _ => 10
+                <= 1 => 40,
+                <= 3 => 30,
+                <= 7 => 20,
+                <= 14 => 10,
+                _ => 5
             };
 
             int effortScore = (int)task.Effort * 10;

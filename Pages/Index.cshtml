@@ -2,11 +2,24 @@
 @model PriorityDashboard.Pages.IndexModel
 
 <link rel="stylesheet" href="/css/site.css" />
+<script src="~/js/site.js"></script>
 
 
 <div class="container">
-    <h1>Priority Dashboard</h1>
-    <p class="subtitle">Tasks ranked by priority score</p>
+    <div class="header-row">
+        <h1>Priority Dashboard</h1>
+        <button class="info-btn" onclick="toggleInfo()">?</button>
+    </div>
+
+    <div id="infoBox" class="info-box">
+        <h3>How Priority Score Works</h3>
+        <ul>
+            <li><strong>Deadline:</strong> Sooner deadlines get higher scores (5-40)</li>
+            <li><strong>Effort:</strong> Higher effort increases priority (10-30)</li>
+            <li><strong>Importance:</strong> Higher importance increases priority (10-30)</li>
+        </ul>
+        <p>Final score is capped at 100.</p>
+    </div>
 
     <button onclick="openModal()">+ Add Task</button>
 
@@ -16,7 +29,7 @@
                 <th>#</th>
                 <th>Task</th>
                 <th>Deadline</th>
-                <th>Priority Score</th>
+                <th>Score</th>
                 <th></th>
             </tr>
         </thead>
@@ -32,7 +45,7 @@
                     <td>
                         <div class="task-header">
                             <strong>@t.Title</strong>
-                            <button class="add-sub" onclick="showSubtaskInput(@t.Id)">+</button>
+                            <button type="button" class="add-sub" onclick="showSubtaskInput(@t.Id)">+</button>
                         </div>
 
                         @if (subtasks.Length > 0)
@@ -54,13 +67,13 @@
                     </td>
 
                     <td>@t.Deadline.ToShortDateString()</td>
+
                     <td><strong>@t.Score</strong></td>
 
-                    <!-- DELETE BUTTON -->
                     <td>
                         <form method="post" asp-page-handler="Delete">
                             <input type="hidden" name="id" value="@t.Id" />
-                            <button class="delete-btn" type="submit">✕</button>
+                            <button type="submit" class="delete-btn" onclick="return confirm('Delete this task?')">✕</button>
                         </form>
                     </td>
                 </tr>
@@ -100,19 +113,3 @@
         </div>
     </form>
 </div>
-
-<script>
-    function openModal() {
-        document.getElementById('modal').style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('modal').style.display = 'none';
-    }
-
-    function showSubtaskInput(id) {
-        const form = document.getElementById('form-' + id);
-        form.style.display = 'block';
-        form.querySelector('input[name="subtask"]').focus();
-    }
-</script>

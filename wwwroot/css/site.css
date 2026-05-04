@@ -81,6 +81,30 @@ button {
     color: #ccc;
 }
 
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-btn {
+    background: #444;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    color: white;
+    cursor: pointer;
+}
+
+.info-box {
+    display: none;
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
 .subtasks input {
     margin-right: 6px;
 }
